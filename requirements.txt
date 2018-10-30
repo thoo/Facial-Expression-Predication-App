@@ -1,0 +1,3 @@
+-e git+https://github.com/cmusatyalab/openface@c2d3b2df055ae8637eff28422d7916c1575a6e83#egg=openface
+
+
