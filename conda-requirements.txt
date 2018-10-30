@@ -1,6 +1,7 @@
 # This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
 # platform: osx-64
+pip
 absl-py=0.6.0=py36_0
 asn1crypto=0.24.0=py36_1003
 astor=0.7.1=py_0
