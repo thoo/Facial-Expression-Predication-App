@@ -81,7 +81,7 @@ The first convolutional neural networks model is a 4-layer simple model. There a
 
 <p align="center">
 <img src="Images/layout2.png"  align="middle"/>
-<h5 align="center">Figure 6. Architecture of a simple CNN</h4>
+<h5 align="center">Figure 7. Architecture of a simple CNN</h4>
 </p>
 
 This is a very shallow network and relatively very easy to train. Here is the loss curve and confusion matrix for this model. As we can conclude from this model, the prediction accuracy is high on `Happy`,`Surprise` and `Neutral` category. This CNN algorithm has hard time classifying `Angry`, `Sad` and `Fear` category and are quite often gotten confused with `Neutral` as illustrated in the confusion matrix. This model can be reimplemented by running `First Convolutional Neural Net-fv.ipynb`.
@@ -90,7 +90,7 @@ This is a very shallow network and relatively very easy to train. Here is the lo
 
 <p align="center">
 <img src="Images/curve.png"  align="middle"/>
-<h5 align="center">Figure 7. Loss curve and accuracy on the validation dataset on the left and the confusion matrix on the right figure.</h4>
+<h5 align="center">Figure 8. Loss curve and accuracy on the validation dataset on the left and the confusion matrix on the right figure.</h4>
 </p>
 
 ## 4 Ensemble Models
@@ -98,7 +98,7 @@ Instead of applying the best single model to predict the categories, I will use 
 
 <p align="center">
 <img src="Images/Ensemble.png"  align="middle"/>
-<h5 align="center">Figure 8. Confusion matrix for ensemble models</h4>
+<h5 align="center">Figure 9. Confusion matrix for ensemble models</h4>
 </p>
 
 ## 5 Wider CNN Model
@@ -117,8 +117,8 @@ In the previous model, we don't consider dropout and regularization to avoid ove
 The second model is slightly better than the first one with an average accuracy of around **63.6%** compared to **~62 %** from the first model. But in terms of the amount of computation, only 1.6% increasement is not a good improvement. Therefore, I look into the ensemble learning and the accuracy of the ensemble learning is about **65.9 %**. It is about 2.2% improvement on accuracy compared to the first shallow CNN model. Accuracy on differentiating between `Sad` and `Neutral` gains a boost in this model.
 
 <p align="center">
-<img src="Images/Ensemble2.png"  align="middle"/>
-<h5 align="center">Figure 7. Confusion matrix for ensemble deeper CNN models</h4>
+<img src="Images/Ensemble2.png"  align="middle"  />
+<h5 align="center">Figure 10. Confusion matrix for ensemble deeper CNN models</h4>
 </p>
 
 This model is demonstrated in
@@ -126,7 +126,7 @@ This model is demonstrated in
 
 <p align="center">
 <img src="Images/Wrong_prediction1.jpg"  align="middle"  />
-<h5 align="left">Figure 8. Images where the model predicted incorrectly. In the caption below each image, the label is on the left and the prediction is on the right. </h4>
+<h5 align="left">Figure 10. Images where the model predicted incorrectly. In the caption below each image, the label is on the left and the prediction is on the right. </h4>
 </p>
 
 ## 6 Residual Neural Network
@@ -134,8 +134,15 @@ This model is demonstrated in
 
 <p align="center">
 <img src="Images/curve3.png"  align="middle"/>
-<h5 left="center">Figure 9. Loss curve and accuracy on the validation dataset on the left and the confusion matrix on the right figure.</h4>
+<h5 left="center">Figure 11. Loss curve and accuracy on the validation dataset on the left and the confusion matrix on the right figure.</h4>
 </p>
 
 ## 7 Web Application
 For the deployment, I need three major dependencies: *tensorflow*, *dlib*, and *opencv*. To meet all the package requirements, I packed all python dependencies and scripts into a docker image and deploy it to Google Container Registry. Then, transform the docker image to a web application using Google App Engine. The web application can be accessed at https://facial-expression-recognition.appspot.com . One can upload the image and the application looks for faces in the image by detecting the facial landmark with `dlib`. Then, use residual neural network to predict the emotional state and plot a probability bar graph.
+
+Here is the web application in action.
+
+<p align="center">
+<img src="Images/app.png"  align="middle" width="600px"/>
+<h5 left="center">Figure 12. Plot a probability of a given image.</h4>
+</p>
