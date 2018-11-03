@@ -1,5 +1,7 @@
 import tensorflow as tf
 import numpy as np
+import os,sys
+cur_path=os.path.dirname(os.path.realpath(__file__))
 
 image_size=48
 image_size_flat=image_size*image_size
@@ -108,5 +110,5 @@ session = tf.Session()
 saver = tf.train.Saver(max_to_keep=10000)
 
 session.run(tf.global_variables_initializer())
-model_path = './lib/tensor_model/new1_12000_66'
+model_path = cur_path+'/tensor_model/new1_12000_66'
 saver.restore(sess=session,save_path=model_path)

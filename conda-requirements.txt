@@ -1,14 +1,5 @@
-# This file may be used to create an environment using:
-# $ conda create --name <env> --file <this file>
-# platform: osx-64
 pip
-scikit-image
 numpy
+pillow
 tensorflow
-dash 
-dash-core-components 
-dash-html-components 
-dash-renderer 
-dask-core 
 dlib
-opencv

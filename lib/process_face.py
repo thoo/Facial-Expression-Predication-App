@@ -8,15 +8,21 @@ import dash_core_components as dcc
 import dash_html_components as html
 import numpy as np
 import openface as opf
-import skimage
+#import skimage
 from dash.dependencies import Input, Output
 from imageio import imread
 from PIL import Image
-from skimage.color import rgb2gray
-from skimage.transform import rescale
+import os,sys
+cur_path=os.path.dirname(os.path.realpath(__file__))
+sys.path.append(cur_path)
+import skimage_convert as skconvert
+#import lib.skimage_convert as skconvert
+#from skimage.color import rgb2gray
+
+#from skimage.transform import rescale
 
 
-dlib_fun=opf.AlignDlib('./lib/dlib_model/shape_predictor_68_face_landmarks.dat')
+dlib_fun=opf.AlignDlib(cur_path+'/dlib_model/shape_predictor_68_face_landmarks.dat')
 def _get_face(contents):
     if contents.startswith('data:image/jpeg;base64,'):
         contents=contents[len('data:image/jpeg;base64,'):]
@@ -31,12 +37,34 @@ def _get_face(contents):
 
 def arrtobase64(arr):
     return 'data:image/png;base64,{}'.format(base64.encodestring(arr).decode('utf-8'))
+def _prepare_colorarray(arr):
+    """Check the shape of the array and convert it to
+    floating point representation.
+    """
+    arr = np.asanyarray(arr)
+
+    if arr.ndim not in [3, 4] or arr.shape[-1] != 3:
+        msg = ("the input array must be have a shape == (.., ..,[ ..,] 3)), " +
+               "got (" + (", ".join(map(str, arr.shape))) + ")")
+        raise ValueError(msg)
+
+    return skconvert.img_as_float(arr)
+
+# def rgb2gray(rgb):
+#     return np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
+def rgb2gray(rgb):
+    if rgb.ndim == 2:
+        return np.ascontiguousarray(rgb)
+
+    rgb = _prepare_colorarray(rgb[..., :3])
+    coeffs = np.array([0.2125, 0.7154, 0.0721], dtype=rgb.dtype)
+    return rgb @ coeffs
 
 def encode(image) -> str:
 
     # convert image to bytes
     with io.BytesIO() as output_bytes:
-        PIL_image = Image.fromarray(skimage.img_as_ubyte(image))
+        PIL_image = Image.fromarray(skconvert.img_as_ubyte(image))
         PIL_image.save(output_bytes, 'JPEG') # Note JPG is not a vaild type here
         bytes_data = output_bytes.getvalue()
 

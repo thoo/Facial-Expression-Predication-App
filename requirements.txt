@@ -1,3 +1,10 @@
+gunicorn==19.9.0
+#opencv-python
 -e git+https://github.com/cmusatyalab/openface@c2d3b2df055ae8637eff28422d7916c1575a6e83#egg=openface
-
-
+imageio
+dash
+dash-renderer
+dash-core-components
+dash-html-components
+dash-table-experiments
+plotly
