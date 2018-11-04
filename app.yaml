@@ -13,6 +13,6 @@ entrypoint: gunicorn -b :$PORT main:server
 manual_scaling:
   instances: 1
 resources:
-  cpu: 8
-  memory_gb: 32.0
-  disk_size_gb: 100
+  cpu: 1
+  memory_gb: 4.0
+  disk_size_gb: 20

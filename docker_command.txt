@@ -1,0 +1,5 @@
+docker build -t simple_dash_mini .
+docker run -d -p 8080:8080 simple_dash_mini #run docker image
+docker tag simple_dash_mini gcr.io/facial-expression-recognition/simple_dash_mini:ver0
+docker push gcr.io/facial-expression-recognition/simple_dash_mini:ver0 #push image to gcr
+gcloud app deploy --image-url gcr.io/facial-expression-recognition/simple_dash:ver0 #tag needed
