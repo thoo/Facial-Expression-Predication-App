@@ -1,33 +1,31 @@
-import base64
-import datetime
-import io
-import pdb
+# import base64
+# import datetime
+# import io
 
+import os
+import sys
+
+import cv2
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import numpy as np
-import openface as opf
-#import skimage
 from dash.dependencies import Input, Output
 from imageio import imread
-from PIL import Image
-#from skimage.color import rgb2gray
-#from skimage.transform import rescale
-import os,sys
+
+from lib.process_face import get_face
+from lib.style import *
+from lib.tensorflow_model import *
+
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
 
-import cv2
-from lib.process_face import *
-from lib.style import *
-from lib.tensorflow_model import *
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
-#app.scripts.config.serve_locally = False
+# app.scripts.config.serve_locally = False
 
 app.layout = html.Div([
     html.H2(
@@ -117,27 +115,27 @@ def side_by_side_plot(list_images,y_prediction):
 
         #
 def parse_contents(contents, filename):
-
+    # import pdb; pdb.set_trace()
     aligned_faces = get_face(contents)
-    #encoded_imges = [ arrtobase64(img) for img in aligned_faces]
-    faces_arr=np.array(aligned_faces).reshape(len(aligned_faces),-1)
-    y_prediction=session.run(y_pred, feed_dict={x: faces_arr })
+    # encoded_imges = [ arrtobase64(img) for img in aligned_faces]
+    faces_arr = np.array(aligned_faces).reshape(len(aligned_faces),-1)
+    y_prediction = session.run(y_pred, feed_dict={x: faces_arr })
     y_prediction = np.round(y_prediction,2)*100
 
-    #import pdb;pdb.set_trace()
+    # import pdb;pdb.set_trace()
 
     images = [ html.Div([
             html.H5(filename, style= h5_style),
-        #html.H6(datetime.datetime.fromtimestamp(date)),
+        # html.H6(datetime.datetime.fromtimestamp(date)),
         # HTML images accept base64 encoded strings in the same format
         # that is supplied by the upload
             html.Img(src=contents, style = { 'margin' : 'auto', 'display': 'block'}),
             html.Hr(style=my_hr_style),
             ])
     ]
-    #images.extend(layout_plot(contents))
+    # images.extend(layout_plot(contents))
     images.extend(side_by_side_plot(aligned_faces,y_prediction))
-    #import pdb;pdb.set_trace()
+    # import pdb;pdb.set_trace()
     return html.Div(images)
 
 @app.callback(Output('output-image-upload', 'children'),
@@ -145,10 +143,17 @@ def parse_contents(contents, filename):
                Input('upload-image', 'filename')])
                #Input('upload-image', 'last_modified')])
 def update_output(list_of_contents, list_of_names):
-    if list_of_contents is not None:
-        children = [ parse_contents(c, n) for c, n in
-            zip(list_of_contents, list_of_names)]
-        return children
+    # import pdb;pdb.set_trace()
+    if list_of_contents is None:
+        with open('nasa.txt','r') as f:
+            nasa_image_data=f.readlines()
+        list_of_names=['Test Image. Please Upload your own image.']
+        list_of_contents=nasa_image_data
+
+    children = [ parse_contents(c, n) for c, n in
+        zip(list_of_contents, list_of_names)]
+    return children
+
 
 
 # app.css.append_css({
@@ -156,4 +161,4 @@ def update_output(list_of_contents, list_of_names):
 # })
 
 if __name__ == '__main__':
-    app.run_server(debug=False, host='0.0.0.0', port=8080)
+    app.run_server(debug=False, host='0.0.0.0', port=8082)
