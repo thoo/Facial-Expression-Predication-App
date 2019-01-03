@@ -7,13 +7,13 @@ my_hr_style={
                 'margin-left': 'auto',
                 'margin-right': 'auto'
             }
-h5_style = {
+my_h2_style = {
             'textAlign': 'center',
             'color': 'black',
             'margin-top': '1.0rem',
             'margin-bottom': '1.0rem'
         }
-img_style = { 'margin' : 'auto',
+my_img_style = { 'margin' : 'auto',
               #'align' : 'middle',
               'display': 'block',
             #   'width':'80%',

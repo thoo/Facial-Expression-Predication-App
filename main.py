@@ -13,8 +13,8 @@ import numpy as np
 from dash.dependencies import Input, Output
 from imageio import imread
 
-from lib.process_face import get_face
-from lib.style import *
+from lib.process_face import get_face, encode
+from lib.style import my_hr_style, my_h2_style, my_img_style
 from lib.tensorflow_model import *
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
@@ -30,12 +30,7 @@ server = app.server
 app.layout = html.Div([
     html.H2(
         children='Facial Expression Recognition',
-        style={
-            'textAlign': 'center',
-            'color': 'black',
-            'margin-top': '1.0rem',
-            'margin-bottom': '1.0rem'
-        }
+        style=my_h2_style
     ),
     #html.Hr(),
     dcc.Upload(
@@ -77,7 +72,7 @@ def layout_plot(num, img, predictions):
     result = html.Div([
                     html.Div([
                           html.Div(
-                                    html.Img(src=img, style=img_style),
+                                    html.Img(src=img, style=my_img_style),
                                     className="six columns"),
                           html.Div(
                                     dcc.Graph(id=str(num),figure={
@@ -125,7 +120,7 @@ def parse_contents(contents, filename):
     # import pdb;pdb.set_trace()
 
     images = [ html.Div([
-            html.H5(filename, style= h5_style),
+            html.H5(filename, style= my_h2_style),
         # html.H6(datetime.datetime.fromtimestamp(date)),
         # HTML images accept base64 encoded strings in the same format
         # that is supplied by the upload
