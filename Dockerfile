@@ -45,5 +45,9 @@ RUN pip install -r /myapp/requirements.txt
 #ENTRYPOINT [ "/usr/bin/tini", "--" ]
 #EXPOSE 8080
 #CMD [ "/bin/bash" ]
+
+#For local app
 #CMD ["gunicorn", "-b","0.0.0.0:8080", "main:server", "-t", "3600"]
+
+#For Google_cloud
 CMD exec gunicorn -b :$PORT main:server --timeout 1800
